@@ -1,1 +1,1 @@
-# food-bank-api
+# Food Bank API (CPSC 304)

@@ -1,0 +1,841 @@
+swagger: "2.0"
+info:
+  description: "API for Food Bank (CPSC 304)"
+  version: "1.0.0"
+  title: "Food Bank"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "pritpalc13@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "food-bank-304.swagger.io"
+basePath: "/"
+tags:
+- name: "admin"
+- name: "distributor"
+- name: "recipient"
+schemes:
+- "http"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /admin:
+    get:
+      tags:
+      - "admin"
+      summary: "Get a list of admins"
+      operationId: "admin-get-office-admins"
+      responses:
+        200:
+          description: "List of admins"
+          schema:
+            $ref: '#/definitions/Office_Administrator'
+  /admin/list-foods:
+    get:
+      tags:
+      - "admin"
+      summary: "Get foods by food type at a warehouse"
+      operationId: "admin-get-list-foods"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - foodTypeName
+          - warehouse
+          properties:
+            foodTypeName:
+              type: "string"
+            warehouse:
+              $ref: '#/definitions/Warehouse'
+      responses:
+        200:
+          description: "List of food by type and warehouse"
+          schema:
+            type: "object"
+            properties:
+              foodTypeName:
+                type: "string"
+              warehouse:
+                $ref: '#/definitions/Warehouse'
+  /admin/get-office-admins:
+    get:
+      tags:
+      - "admin"
+      summary: "Get office admins that oversee warehouse"
+      operationId: "admin-get-office-admins-warehouse"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - warehouse
+          properties:
+            warehouse:
+              $ref: '#/definitions/Warehouse'
+      responses:
+        200:
+          description: "List of admin names who oversee transactions completed at a warehouse"
+          schema:
+            type: "object"
+            properties:
+              adminName:
+                type: "string"
+  /admin/get-food-types:
+    get:
+      tags:
+      - "admin"
+      summary: "Get foods by food type"
+      operationId: "admin-get-foods-by-type"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - warehouse
+          properties:
+            warehouse:
+              $ref: '#/definitions/Warehouse'
+      responses:
+        200:
+          description: "List/Count foods by food type at a warehouse"
+          schema:
+            type: "object"
+            properties:
+              foodTypeName:
+                type: "string"
+  /admin/outreach-signup:
+    post:
+        tags:
+        - "admin"
+        summary: "Sign up for outreach event"
+        operationId: "admin-outreach-signup"
+        parameters: 
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            required:
+            - outreachId
+            - volunteerId
+            properties:
+              outreachId:
+                type: "integer"
+              volunteerId:
+                type: "integer"
+        responses:
+          200:
+            description: "Sign up for outreach event"
+            schema:
+              type: "object"
+              properties:
+                body:
+                  $ref: '#/definitions/Outreach_Signup'
+  /admin/outreach:
+    get:
+      tags:
+      - "admin"
+      summary: "Get outreach volunteers"
+      operationId: "admin-outreach"
+      responses:
+        200:
+          description: "Get outreach volunteers grouped by event"
+          schema:
+            type: "object"
+  /admin/{distributorId}:
+    get:
+      tags:
+      - "admin"
+      summary: "Get transactions by distributor"
+      operationId: "admin-get-dist-transactions"
+      parameters:
+      - in: "path"
+        name: "distributorId"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Get transactions by distributor"
+          schema:
+            type: "object"
+            properties:
+              foodType:
+                $ref: '#/definitions/Food_Type'
+              foodId:
+                type: "integer"
+              expiryDate:
+                type: "string"
+              transId:
+                type: "integer"
+              transRecipId:
+                type: "integer"
+              transDate:
+                type: "string"
+              transTime:
+                type: "string"
+              office:
+                $ref: '#/definitions/Office'
+  /admin/office:
+    post:
+      tags:
+      - "admin"
+      summary: "Insert an office"
+      operationId: "admin-insert-office"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - office
+          properties:
+            office:
+              $ref: '#/definitions/Office'
+      responses:
+        200:
+          description: "Insert an office"
+          schema:
+            type: "object"
+            properties:
+              office:
+                $ref: '#/definitions/Office'
+    put:
+      tags:
+      - "admin"
+      summary: "Update an office"
+      operationId: "admin-update-office"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - office
+          properties:
+            office:
+              $ref: '#/definitions/Office'
+      responses:
+        200:
+          description: "Update an office"
+          schema:
+            type: "object"
+            properties:
+              office:
+                $ref: '#/definitions/Office'
+    delete:
+      tags:
+      - "admin"
+      summary: "Delete an office"
+      operationId: "admin-delete-office"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - office
+          properties:
+            office:
+              $ref: '#/definitions/Office'
+      responses:
+        200:
+          description: "Delete an office"
+          schema:
+            type: "object"
+            properties:
+              office:
+                $ref: '#/definitions/Office'
+  /admin/transactions:
+    put:
+      tags:
+      - "admin"
+      summary: "Update a transaction"
+      operationId: "admin-update-transaction"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - transId
+          properties:
+            transId:
+              type: "integer"
+            transaction:
+              $ref: '#/definitions/Transaction'
+      responses:
+        200:
+          description: "Update a transaction"
+          schema:
+            type: "object"
+            properties:
+              transaction:
+                $ref: '#/definitions/Transaction'
+    delete:
+      tags:
+      - "admin"
+      summary: "Delete a transaction"
+      operationId: "admin-delete-transaction"
+      parameters:
+      - in: "body"
+        name: "transactionId"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        200:
+          description: "Delete a transaction"
+          schema:
+            type: "object"
+            properties:
+              transaction:
+                $ref: '#/definitions/Transaction'
+  /admin/table:
+    get:
+      tags:
+      - "admin"
+      summary: "Get a table"
+      operationId: "admin-get-table"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        200:
+          description: "Get entire table"
+          schema:
+            type: "object"
+  /admin/admin:
+    post:
+      tags:
+      - "admin"
+      summary: "Add an admin to office"
+      operationId: "admin-insert-admin"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - volunteerId
+          - office
+          properties:
+            volunteerId:
+              type: "integer"
+            office:
+              $ref: '#/definitions/Office'
+      responses:
+        200:
+          description: "Insert admin"
+          schema:
+            $ref: '#/definitions/Office_Administrator'
+  /admin/dist:
+    post:
+      tags:
+      - "admin"
+      summary: "Add a distributor to warehouse"
+      operationId: "admin-insert-dist"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - volunteerId
+          - warehouse
+          properties:
+            volunteerId:
+              type: "integer"
+            warehouse:
+              $ref: '#/definitions/Warehouse'
+      responses:
+        200:
+          description: "Insert distributor"
+          schema:
+            $ref: '#/definitions/Distributor'
+    delete:
+      tags:
+      - "admin"
+      summary: "Delete a dist. from warehouse"
+      operationId: "admin-delete-dist"
+      parameters: 
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: '#/definitions/Warehouse'
+      responses:
+        200:
+          description: "Delete a distributor from warehouse"
+          schema:
+            $ref: '#/definitions/Distributor'
+  /admin/volunteer:
+    delete:
+      tags:
+      - "admin"
+      summary: "Delete a volunteer"
+      operationId: "admin-delete-volunteer"
+      parameters:
+      - in: "body"
+        name: "volunteerId"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        200:
+          description: "Delete a volunteer"
+          schema:
+            $ref: '#/definitions/Volunteer'
+  /admin/create-view:
+    post:
+      tags:
+      - "admin"
+      summary: "Create view"
+      operationId: "admin-create-view"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - office
+          - transDate
+          - transTime
+          properties:
+            office:
+              $ref: '#/definitions/Office'
+            transDate:
+              type: "string"
+            transTime:
+              type: "string"
+      responses:
+        200:
+          description: "Create view for transactions table"
+          schema:
+            type: "object"
+  /admin/division:
+    get:
+      tags:
+      - "admin"
+      summary: "Division"
+      operationId: "admin-division"
+      responses:
+        200:
+          description: "Division on volunteers"
+          schema:
+            type: "object"
+  /dist/get-food-types:
+    get:
+      tags:
+      - "distributor"
+      summary: "Get foods by food type"
+      operationId: "dist-get-foods-by-type"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - warehouse
+          properties:
+            warehouse:
+              $ref: '#/definitions/Warehouse'
+      responses:
+        200:
+          description: "List/Count foods by food type at a warehouse"
+          schema:
+            type: "object"
+            properties:
+              foodTypeName:
+                type: "string"
+  /dist/outreach-signup:
+    post:
+        tags:
+        - "distributor"
+        summary: "Sign up for outreach event"
+        operationId: "dist-outreach-signup"
+        parameters: 
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: "object"
+            required:
+            - outreachId
+            - volunteerId
+            properties:
+              outreachId:
+                type: "integer"
+              volunteerId:
+                type: "integer"
+        responses:
+          200:
+            description: "Sign up for outreach event"
+            schema:
+              type: "object"
+              properties:
+                body:
+                  $ref: '#/definitions/Outreach_Signup'
+  /dist/{distributorId}:
+    get:
+      tags:
+      - "distributor"
+      summary: "Get food from dist. warehouse"
+      operationId: "dist-food"
+      parameters: 
+      - in: "path"
+        name: "distributorId"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Get food from distributor's warehouse"
+          schema:
+            type: "object"
+            properties:
+              foodTypeName:
+                type: "string"
+              nutritionalValue:
+                type: "string"
+              allergyNotice:
+                type: "string"
+              expiryDate:
+                type: "string"
+  /dist/transaction:
+    post:
+      tags:
+      - "distributor"
+      summary: "Insert a transaction"
+      operationId: "dist-insert-trans"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: '#/definitions/Transaction'
+      responses:
+        200:
+          description: "Insert a transaction"
+          schema:
+            $ref: '#/definitions/Transaction'
+    put:
+      tags:
+      - "distributor"
+      summary: "Update a transaction"
+      operationId: "dist-update-trans"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - transId
+          properties:
+            transId:
+              type: "integer"
+            transDate:
+              type: "string"
+            transTime:
+              type: "string"
+      responses:
+        200:
+          description: "Update a transaction"
+          schema:
+            $ref: '#/definitions/Transaction'
+  /dist/food:
+    get:
+      tags:
+      - "distributor"
+      summary: "Get all foods and types"
+      operationId: "dist-get-food"
+      responses:
+        200:
+          description: "Get all foods and their food types"
+          schema:
+            type: "object"
+    post:
+      tags:
+      - "distributor"
+      summary: "Insert"
+      operationId: "dist-insert-food"
+      parameters: 
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: '#/definitions/Food'
+      responses:
+        200:
+          description: "Insert food"
+          schema:
+            $ref: '#/definitions/Food'
+    put:
+      tags:
+      - "distributor"
+      summary: "Update food expiry date"
+      operationId: "dist-update-expiry"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - foodId
+          - expiryDate
+          properties:
+            foodId:
+              type: "integer"
+            expiryDate:
+              type: "string"
+      responses:
+        200:
+          description: "Update food expiry date"
+          schema:
+            $ref: '#/definitions/Food'
+    delete:
+      tags:
+      - "distributor"
+      summary: "Delete food"
+      operationId: "dist-delete-food"
+      parameters:
+      - in: "body"
+        name: "foodId"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        200:
+          description: "Delete food"
+          schema:
+            $ref: '#/definitions/Food'
+  /dist/food/warehouse:
+    post:
+      tags:
+      - "distributor"
+      summary: "Update food in warehouse"
+      operationId: "dist-update-food-warehouse"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - foodId
+          - warehouse
+          properties:
+            foodId:
+              type: "integer"
+            warehouse:
+              $ref: '#/definitions/Warehouse'
+      responses:
+        200:
+          description: "Update food in warehouse"
+          schema:
+            $ref: '#/definitions/Food'
+  /recipient/{recipientId}:
+    get:
+      tags:
+      - "recipient"
+      summary: "Get previous transactions"
+      operationId: "recip-transaction"
+      parameters:
+      - in: "path"
+        name: "recipientId"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Get previous transactions for recipient"
+          schema:
+            type: "object"
+            properties:
+              transactionId:
+                type: "integer"
+              distributorId:
+                type: "integer"
+              transDate:
+                type: "string"
+              transTime:
+                type: "string"
+              foodTypeName:
+                type: "string"
+              nutritionalValue:
+                type: "string"
+              allergyNotice:
+                type: "string"
+              expiryDate:
+                type: "string"
+  /recipient/warehouse:
+    get:
+      tags:
+      - "recipient"
+      summary: "Get food at a warehouse"
+      operationId: "recip-food-warehouse"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: '#/definitions/Warehouse'
+      responses:
+        200:
+          description: "Get food at a warehouse"
+          schema:
+            type: "object"
+            properties:
+              foodTypeName:
+                type: "integer"
+              nutritionalValue:
+                type: "string"
+              allergyNotice:
+                type: "string"
+              expiryDate:
+                type: "string"
+definitions:
+  Warehouse:
+    type: "object"
+    required:
+    - "warehouse_location"
+    - "warehouse_city"
+    properties:
+      warehouse_location:
+        type: "string"
+      warehouse_city:
+        type: "string"
+  Office:
+    type: "object"
+    required:
+    - "office_location"
+    - "office_city"
+    properties:
+      office_location:
+        type: "string"
+      office_city:
+        type: "string"
+  Outreach_Signup:
+    type: "object"
+    required:
+    - "volunteer_id"
+    - "outreach_id"
+    properties:
+      volunteer_id:
+        type: "integer"
+        format: "int64"
+      outreach_id:
+        type: "integer"
+        format: "int64"
+  Food_Type:
+    type: "object"
+    required:
+    - "food_type_id"
+    properties:
+      food_type_id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      nutritional_value:
+        type: "string"
+      allergy_notice:
+        type: "string"
+  Food:
+    type: "object"
+    required:
+    - "food_id"
+    - "food_type_id"
+    - "donor_id"
+    - "warehouse"
+    properties:
+      food_id:
+        type: "integer"
+        format: "int64"
+      expiry_date:
+        type: "string"
+      food_type_id:
+        type: "integer"
+        format: "int64"
+      donor_id:
+        type: "integer"
+        format: "int64"
+      warehouse:
+        $ref: "#/definitions/Warehouse"
+  Office_Administrator:
+    type: "object"
+    required:
+    - "office_admin_id"
+    - "office"
+    properties:
+      office_admin_id:
+        type: "integer"
+        format: "int64"
+      office:
+        $ref: "#/definitions/Office"
+  Distributor:
+    type: "object"
+    required:
+    - "distributor_id"
+    - "warehouse"
+    properties:
+      distributor_id:
+        type: "integer"
+        format: "int64"
+      warehouse:
+        $ref: "#/definitions/Warehouse"
+  Volunteer:
+    type: "object"
+    required:
+    - "volunteer_id"
+    properties:
+      volunteer_id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      email_address:
+        type: "string"
+  Transaction:
+    type: "object"
+    required:
+    - "transaction_id"
+    properties:
+      transaction_id:
+        type: "integer"
+        format: "int64"
+      food_id:
+        type: "integer"
+        format: "int64"
+      distributor_id:
+        type: "integer"
+        format: "int64"
+      recipient_id:
+        type: "integer"
+        format: "int64"
+      transaction_date:
+        type: "string"
+      transaction_time:
+        type: "string"
+      office:
+        $ref: "#/definitions/Office"
