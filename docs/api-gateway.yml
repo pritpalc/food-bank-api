@@ -32,7 +32,7 @@ paths:
         200:
           description: "List of admins"
           schema:
-            $ref: '#/definitions/Office_Administrator'
+            $ref: '#/definitions/OfficeAdministrator'
   /admin/list-foods:
     get:
       tags:
@@ -140,7 +140,7 @@ paths:
               type: "object"
               properties:
                 body:
-                  $ref: '#/definitions/Outreach_Signup'
+                  $ref: '#/definitions/OutreachSignup'
   /admin/outreach:
     get:
       tags:
@@ -170,7 +170,7 @@ paths:
             type: "object"
             properties:
               foodType:
-                $ref: '#/definitions/Food_Type'
+                $ref: '#/definitions/FoodType'
               foodId:
                 type: "integer"
               expiryDate:
@@ -345,7 +345,7 @@ paths:
         200:
           description: "Insert admin"
           schema:
-            $ref: '#/definitions/Office_Administrator'
+            $ref: '#/definitions/OfficeAdministrator'
   /admin/dist:
     post:
       tags:
@@ -495,7 +495,7 @@ paths:
               type: "object"
               properties:
                 body:
-                  $ref: '#/definitions/Outreach_Signup'
+                  $ref: '#/definitions/OutreachSignup'
   /dist/{distributorId}:
     get:
       tags:
@@ -735,7 +735,7 @@ definitions:
         type: "string"
       office_city:
         type: "string"
-  Outreach_Signup:
+  OutreachSignup:
     type: "object"
     required:
     - "volunteer_id"
@@ -747,7 +747,7 @@ definitions:
       outreach_id:
         type: "integer"
         format: "int64"
-  Food_Type:
+  FoodType:
     type: "object"
     required:
     - "food_type_id"
@@ -782,7 +782,7 @@ definitions:
         format: "int64"
       warehouse:
         $ref: "#/definitions/Warehouse"
-  Office_Administrator:
+  OfficeAdministrator:
     type: "object"
     required:
     - "office_admin_id"

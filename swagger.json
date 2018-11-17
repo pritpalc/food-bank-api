@@ -47,7 +47,7 @@
           "200": {
             "description": "List of admins",
             "schema": {
-              "$ref": "#/definitions/Office_Administrator"
+              "$ref": "#/definitions/OfficeAdministrator"
             }
           }
         }
@@ -216,7 +216,7 @@
               "type": "object",
               "properties": {
                 "body": {
-                  "$ref": "#/definitions/Outreach_Signup"
+                  "$ref": "#/definitions/OutreachSignup"
                 }
               }
             }
@@ -263,7 +263,7 @@
               "type": "object",
               "properties": {
                 "foodType": {
-                  "$ref": "#/definitions/Food_Type"
+                  "$ref": "#/definitions/FoodType"
                 },
                 "foodId": {
                   "type": "integer"
@@ -541,7 +541,7 @@
           "200": {
             "description": "Insert admin",
             "schema": {
-              "$ref": "#/definitions/Office_Administrator"
+              "$ref": "#/definitions/OfficeAdministrator"
             }
           }
         }
@@ -774,7 +774,7 @@
               "type": "object",
               "properties": {
                 "body": {
-                  "$ref": "#/definitions/Outreach_Signup"
+                  "$ref": "#/definitions/OutreachSignup"
                 }
               }
             }
@@ -1154,7 +1154,7 @@
         }
       }
     },
-    "Outreach_Signup": {
+    "OutreachSignup": {
       "type": "object",
       "required": [
         "volunteer_id",
@@ -1171,7 +1171,7 @@
         }
       }
     },
-    "Food_Type": {
+    "FoodType": {
       "type": "object",
       "required": [
         "food_type_id"
@@ -1221,7 +1221,7 @@
         }
       }
     },
-    "Office_Administrator": {
+    "OfficeAdministrator": {
       "type": "object",
       "required": [
         "office_admin_id",
